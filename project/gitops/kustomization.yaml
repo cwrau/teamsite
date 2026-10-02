@@ -8,4 +8,4 @@ configMapGenerator:
   - name: site-greeting
     namespace: teamsite-gitops
     literals:
-      - GREETING_MESSAGE=Willkommen bei der Kodschul Team Site (GitOps-Demo)
+      - GREETING_MESSAGE=Willkommen bei der Kodschul Team Site (GitOps-Demo), wir sind fast durch!
