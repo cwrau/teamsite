@@ -1,4 +1,4 @@
-name: Lint HTML
+name: Test und Lint
 on:
   push:
     branches:
@@ -9,9 +9,25 @@ permissions:
   contents: read
 
 jobs:
-  lint:
+  test:
     runs-on: ubuntu-latest
+    services:
+      httpbin:
+        image: mccutchen/go-httpbin:2.25.0
+        ports:
+          - 8080:8080
     steps:
       - uses: actions/checkout@v4
+      - name: Cache Beispielverzeichnis
+        uses: actions/cache@v4
+        with:
+          path: .cache
+          key: teamsite-cache-v1
       - name: HTML-Dateien auflisten
         run: find . -name "*.html" -print
+      - name: Prüfen, ob Startseite existiert
+        run: test -f index.html
+      - name: Prüfen, ob Titel im HTML vorkommt
+        run: grep -q "<title>" index.html
+      - name: Service-Container erreichbar prüfen
+        run: curl -sf http://localhost:8080/get
